@@ -1,13 +1,31 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
-@Data
-public class Game implements Serializable {
+@Entity(name = "games")
+@NoArgsConstructor
+@Getter
+public class Game {
+
+    @Id
+    @Setter
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private Round currentRound;
+
     private boolean going;
+
+    public Game(Long id, String word) {
+        this(word);
+        this.id = id;
+    }
 
     public Game(String word) {
         this.currentRound = new Round(word);
