@@ -7,16 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.hamcrest.Matchers.hasLength;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @SpringBootTest
+@ActiveProfiles("ci")
 @Import(CiTestConfiguration.class)
 @AutoConfigureMockMvc
 class TrainerControllerIntegrationTest {
@@ -25,8 +27,8 @@ class TrainerControllerIntegrationTest {
     private MockMvc mockMvc;
 
     @Test
-    @DisplayName("only starts game when word is given")
-    void gameWithoutWord() throws Exception {
+    @DisplayName("doesnt start game when word not is given")
+    void startGameWithoutWord() throws Exception {
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/game/start");
 
@@ -34,17 +36,45 @@ class TrainerControllerIntegrationTest {
                 .andExpect(status().isBadRequest());
     }
 
-//    @Test
-//    @DisplayName("provides random 5, 6, and 7 letter words")
-//    void provideWords() throws Exception {
-//        for (int length = 5; length <= 7; length++) {
-//            RequestBuilder request = MockMvcRequestBuilders
-//                    .get("/words/random")
-//                    .param("length", String.valueOf(length));
-//
-//            mockMvc.perform(request)
-//                    .andExpect(status().isOk())
-//                    .andExpect(content().string(hasLength(length)));
-//        }
-//    }
+    @Test
+    @DisplayName("only starts game when word is given")
+    void startGameWithWord() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/game/start")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"word\":\"makker\"}");
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.currentHint.hintString").value("m....."))
+                .andExpect(jsonPath("$.lost").value(false));
+    }
+
+    @Test
+    @DisplayName("only starts game when word is given")
+    void getExistingGame() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders
+                .get("/game/1");
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.currentHint.hintString").value("p...."));
+    }
+
+    @Test
+    @DisplayName("only starts game when word is given")
+    void guessRight() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/game/4/guess")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"guess\":\"osmane\"}");
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(4))
+                .andExpect(jsonPath("$.currentHint.hintString").value("o....e"))
+                .andExpect(jsonPath("$.lastFeedback.attempt").value("osmane"));
+    }
+
 }

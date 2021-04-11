@@ -23,8 +23,9 @@ public class Game {
     private boolean going;
 
     public Game(Long id, String word) {
-        this(word);
         this.id = id;
+        this.currentRound = new Round(word);
+        this.going = true;
     }
 
     public Game(String word) {
