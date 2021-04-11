@@ -1,27 +1,5 @@
 package nl.hu.cisq1.lingo.trainer.presentation;
 
-/*
-    TODO: Add use cases
-        [ ] Start New Game
-        [ ] Guess / get hint
-        [ ] Request last hint
-        [ ] Give up
-
-        Spel start -> GET (/game/start)
-          - requires: word
-          - returns: gamestatus (id & first hint) || error
-        Raad woord -> POST (/game/:id/guess)
-          - requires: :id, guess
-          - returns: gamestatus (id, feedback & new hint) || error
-        Request gamestatus -> GET (/game/:id)
-          - requires: :id
-          - returns: gamestatus (id, feedback & new hint) || error
-        Give up -> DELETE (/game/:id)
-          - requires: :id
-          - returns: success || error
-
- */
-
 import nl.hu.cisq1.lingo.trainer.application.TrainerService;
 
 import nl.hu.cisq1.lingo.trainer.presentation.dto.BeginWord;
@@ -30,8 +8,6 @@ import nl.hu.cisq1.lingo.trainer.presentation.dto.Guess;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
-import javax.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("game")
@@ -64,11 +40,6 @@ public class TrainerController {
         } catch (Exception exception) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage());
         }
-    }
-
-    @DeleteMapping("{id})")
-    public String stopGame(@PathVariable("id") Long id) {
-        return "success!";
     }
 
 }

@@ -10,6 +10,7 @@ import nl.hu.cisq1.lingo.trainer.presentation.dto.Guess;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -25,7 +26,7 @@ public class TrainerService {
 
         this.gameRepository.save(game);
 
-        return new GameStatus(game.getId(), game.getCurrentRound().getLastHint());
+        return new GameStatus(game.getId(), game.getCurrentRound().getLastHint(), !game.isGoing());
     }
 
 
@@ -37,13 +38,17 @@ public class TrainerService {
 
         gameRepository.save(game);
 
-        return new GameStatus(game.getId(), feedback, game.getCurrentRound().getLastHint());
+        return new GameStatus(game.getId(), feedback, game.getCurrentRound().getLastHint(), !game.isGoing());
     }
 
     public GameStatus getStatus(Long id) throws Exception {
         Game game = this.gameRepository.findById(id)
                 .orElseThrow(() -> new Exception("Game Not Found"));
 
-        return new GameStatus(game.getId(), game.getCurrentRound().getLastHint());
+        return new GameStatus(game.getId(), game.getCurrentRound().getLastHint(), !game.isGoing());
+    }
+
+    public List<Game> getAllGames() {
+        return this.gameRepository.findAll();
     }
 }
