@@ -18,7 +18,7 @@ public class CiTestConfiguration {
     }
 
     @Bean
-    CommandLineRunner importGameBlobs(SpringGameRepository repository) {
+    CommandLineRunner importGames(SpringGameRepository repository) {
         return new TrainerTestDataFixtures(repository);
     }
 }
