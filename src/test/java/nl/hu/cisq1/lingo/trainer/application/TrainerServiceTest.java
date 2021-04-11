@@ -101,6 +101,34 @@ class TrainerServiceTest {
         assertEquals(game.getCurrentRound().getWordToGuess(), status.getCurrentHint().getHintString());
     }
 
+    @Test
+    @DisplayName("guess game not found")
+    void guessNotFound() {
+        SpringGameRepository mockRepository = mock(SpringGameRepository.class);
+
+        when(mockRepository.findById(anyLong()))
+                .thenReturn(Optional.empty());
+
+        TrainerService service = new TrainerService(mockRepository);
+        Guess guess = new Guess();
+        guess.guess = "woops";
+
+        assertThrows(Exception.class, () -> service.guess(Long.MAX_VALUE, guess));
+    }
+
+    @Test
+    @DisplayName("get gamestatus game not found")
+    void gameStatusNotFound() {
+        SpringGameRepository mockRepository = mock(SpringGameRepository.class);
+
+        when(mockRepository.findById(anyLong()))
+                .thenReturn(Optional.empty());
+
+        TrainerService service = new TrainerService(mockRepository);
+
+        assertThrows(Exception.class, () -> service.getStatus(Long.MAX_VALUE));
+    }
+
     static Stream<Arguments> randomGameExamples() {
         return Stream.of(
                 Arguments.of(1, new Game(1L, "pizza")),
