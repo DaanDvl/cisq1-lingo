@@ -33,7 +33,7 @@ class TrainerControllerIntegrationTest {
                 .post("/game/start");
 
         mockMvc.perform(request)
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     @Test
