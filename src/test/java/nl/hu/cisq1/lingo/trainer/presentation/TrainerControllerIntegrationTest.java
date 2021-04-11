@@ -63,10 +63,10 @@ class TrainerControllerIntegrationTest {
     }
 
     @Test
-    @DisplayName("only starts game when word is given")
-    void guessRight() throws Exception {
+    @DisplayName("guess word")
+    void guessWord() throws Exception {
         RequestBuilder request = MockMvcRequestBuilders
-                .post("/game/4/guess")
+                .post("/game/2/guess")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"guess\":\"osmane\"}");
 

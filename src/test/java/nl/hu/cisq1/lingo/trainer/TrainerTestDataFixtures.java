@@ -13,8 +13,8 @@ public class TrainerTestDataFixtures implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        System.out.println(this.repository.save(new Game("pizza")).getId());
-        System.out.println(this.repository.save(new Game("oranje")).getId());
-        System.out.println(this.repository.save(new Game("wanorde")).getId());
+        System.out.println(this.repository.save(new Game(1L,"pizza")).getId());
+        System.out.println(this.repository.save(new Game(2L,"oranje")).getId());
+        System.out.println(this.repository.save(new Game(3L, "wanorde")).getId());
     }
 }
