@@ -72,7 +72,7 @@ class TrainerControllerIntegrationTest {
 
         mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(4))
+                .andExpect(jsonPath("$.id").value(2))
                 .andExpect(jsonPath("$.currentHint.hintString").value("o....e"))
                 .andExpect(jsonPath("$.lastFeedback.attempt").value("osmane"));
     }
