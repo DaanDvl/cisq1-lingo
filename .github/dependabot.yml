@@ -1,0 +1,24 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "10:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: org.projectlombok:lombok
+    versions:
+    - 1.18.20
+  - dependency-name: org.springframework.boot:spring-boot-maven-plugin
+    versions:
+    - 2.4.4
+  - dependency-name: org.jacoco:jacoco-maven-plugin
+    versions:
+    - 0.8.6
+  - dependency-name: org.pitest:pitest-maven
+    versions:
+    - 1.6.4
+  - dependency-name: org.springframework.boot:spring-boot-starter-parent
+    versions:
+    - 2.4.4
